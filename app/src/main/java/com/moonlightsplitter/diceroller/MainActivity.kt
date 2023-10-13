@@ -1,13 +1,17 @@
 package com.moonlightsplitter.diceroller
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    DiceRollerApp()
+                    LemonadeApp()
                 }
             }
         }
@@ -48,7 +52,54 @@ fun LemonadeApp() {
 
 @Composable
 fun LemonadeMachine(modifier: Modifier = Modifier) {
+    var step by remember { mutableStateOf(1) }
+    var squeezeStep by remember { mutableStateOf(0) }
 
+    when (step) {
+        1 -> {
+            LemonadeContent(modifier = modifier, image = R.drawable.lemon_tree) {
+                step = 2
+                squeezeStep = (2..4).random()
+            }
+        }
+        2 -> {
+            LemonadeContent(modifier = modifier, image = R.drawable.lemon_squeeze) {
+                squeezeStep--
+                if (squeezeStep == 0) {
+                    step = 3
+                }
+            }
+        }
+        3 -> {
+            LemonadeContent(modifier = modifier, image = R.drawable.lemon_drink) {
+                step = 4
+            }
+        }
+        4 -> {
+            LemonadeContent(modifier = modifier, image = R.drawable.lemon_restart) {
+                step = 1
+            }
+        }
+    }
+}
+
+@Composable
+fun LemonadeContent(
+    modifier: Modifier = Modifier,
+    image: Int,
+    onImageClick: () -> Unit
+) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Image(
+            painter = painterResource(image),
+            contentDescription = null,
+            modifier = Modifier.clickable {
+                onImageClick()
+            })
+    }
 }
 
 @Preview
