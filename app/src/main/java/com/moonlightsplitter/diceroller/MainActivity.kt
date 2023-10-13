@@ -39,6 +39,18 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@Composable
+fun LemonadeApp() {
+    LemonadeMachine(modifier = Modifier
+        .fillMaxSize()
+        .wrapContentSize(Alignment.Center))
+}
+
+@Composable
+fun LemonadeMachine(modifier: Modifier = Modifier) {
+
+}
+
 @Preview
 @Composable
 fun DiceRollerApp() {
